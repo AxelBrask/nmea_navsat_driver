@@ -59,9 +59,10 @@ def main():
 
     serial_port = rospy.get_param('~port', '/dev/ttyUSB0')
     serial_baud = rospy.get_param('~baud', 4800)
+    gps_frame = rospy.get_param('~frame_id', 'gps')
 
     # Get the frame_id
-    frame_id = RosNMEADriver.get_frame_id()
+    #  frame_id = RosNMEADriver.get_frame_id()
 
     try:
         GPS = serial.Serial(port=serial_port, baudrate=serial_baud, timeout=2)
@@ -70,7 +71,7 @@ def main():
 
             sentence = Sentence()
             sentence.header.stamp = rospy.get_rostime()
-            sentence.header.frame_id = frame_id
+            sentence.header.frame_id = gps_frame 
             sentence.sentence = data
 
             nmea_pub.publish(sentence)
